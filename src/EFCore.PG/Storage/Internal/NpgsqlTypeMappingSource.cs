@@ -866,13 +866,11 @@ public class NpgsqlTypeMappingSource : RelationalTypeMappingSource
     // We override to support parsing array store names (e.g. varchar(32)[]), timestamp(5) with time zone, etc.
     protected override string? ParseStoreTypeName(
         string? storeTypeName,
-        out bool? unicode,
-        out int? size,
-        out int? precision,
-        out int? scale)
+        ref bool? unicode,
+        ref int? size,
+        ref int? precision,
+        ref int? scale)
     {
-        (unicode, size, precision, scale) = (null, null, null, null);
-
         if (storeTypeName is null)
         {
             return null;
