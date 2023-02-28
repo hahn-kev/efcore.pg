@@ -16,6 +16,36 @@ public class NorthwindNpgsqlContext : NorthwindRelationalContext
 
         modelBuilder.Entity<Order>().Property(o => o.OrderDate).HasColumnType("timestamp without time zone");
 
-        modelBuilder.Entity<CustomerQuery>().ToSqlQuery(@"SELECT ""c"".""CustomerID"", ""c"".""Address"", ""c"".""City"", ""c"".""CompanyName"", ""c"".""ContactName"", ""c"".""ContactTitle"", ""c"".""Country"", ""c"".""Fax"", ""c"".""Phone"", ""c"".""PostalCode"", ""c"".""Region"" FROM ""Customers"" AS ""c""");
+        modelBuilder.Entity<Employee>(
+            b =>
+            {
+                b.Property(c => c.EmployeeID).HasColumnType("int");
+                b.Property(c => c.ReportsTo).HasColumnType("int");
+            });
+
+        modelBuilder.Entity<Order>(
+            b =>
+            {
+                b.Property(o => o.EmployeeID).HasColumnType("int");
+                b.Property(o => o.OrderDate).HasColumnType("timestamp without time zone");
+            });
+
+        modelBuilder.Entity<Product>(
+            b =>
+            {
+                b.Property(p => p.UnitsInStock).HasColumnType("smallint");
+            });
+
+        modelBuilder.Entity<OrderDetail>(
+            b =>
+            {
+                b.Property(p => p.Quantity).HasColumnType("smallint");
+                b.Property(p => p.Discount).HasColumnType("real");
+            });
+
+        modelBuilder.Entity<CustomerQuery>().ToSqlQuery(
+"""
+SELECT "c"."CustomerID", "c"."Address", "c"."City", "c"."CompanyName", "c"."ContactName", "c"."ContactTitle", "c"."Country", "c"."Fax", "c"."Phone", "c"."PostalCode", "c"."Region" FROM "Customers" AS "c"
+""");
     }
 }
